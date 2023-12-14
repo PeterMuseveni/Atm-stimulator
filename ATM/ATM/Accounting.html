@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <title>Banking System</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- Responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+
+    <style>
+        /* Add any custom styles here */
+        .banking_section {
+            padding: 50px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body class="sub_page">
+    <div class="hero_area">
+        <!-- header section starts -->
+        <header class="header_section">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg custom_nav-container">
+                    <a class="navbar-brand" href="Home.html">
+                        <img src="images/logo.png" alt="" />
+                        <span>
+                            ATM STIMULATOR
+                        </span>
+                    </a>
+                    <!-- Remove login link -->
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="Home.html"> Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Reputation.html"> Reputation </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="orders.html">Orders</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="selling_account.html"> Selling Accounts </a>
+                            </li>
+                            
+                            <!-- Remove login link -->
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Banking Section -->
+        <section class="banking_section layout_padding">
+            <div class="container">
+                <div class="heading_container">
+                    <h2>Banking System</h2>
+                </div>
+                <!-- Banking Form -->
+                <form id="bankingForm">
+                    <div class="form-group">
+                        <label for="action">Select Action:</label>
+                        <select class="form-control" id="action" name="action">
+                            <option value="deposit">Deposit</option>
+                            <option value="withdraw">Withdraw</option>
+                            <option value="checkBalance">Check Balance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount (USD):</label>
+                        <input type="number" class="form-control" id="amount" name="amount" min="1" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="performAction()">Submit</button>
+                </form>
+                <!-- End of Banking Form -->
+                <div id="result"></div>
+                <div id="balance" style="margin-top: 20px;"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript code -->
+    <script>
+        // Banking variables
+        let balance = 0;
+        const withdrawalLimit = 125;
+
+        function performAction() {
+            const action = document.getElementById("action").value;
+            const amount = parseFloat(document.getElementById("amount").value);
+
+            if (action === "deposit") {
+                deposit(amount);
+            } else if (action === "withdraw") {
+                withdraw(amount);
+            } else if (action === "checkBalance") {
+                checkBalance();
+            }
+        }
+
+        function deposit(amount) {
+            if (amount > 0) {
+                balance += amount;
+                displayResult(`Deposited ${amount} USD successfully. Current balance: ${balance} USD.`);
+            } else {
+                displayResult("Invalid deposit amount.");
+            }
+        }
+
+        function withdraw(amount) {
+            if (amount > withdrawalLimit && amount <= balance) {
+                balance -= amount;
+                displayResult(`Withdrawn ${amount} USD successfully. Current balance: ${balance} USD.`);
+            } else if (amount <= withdrawalLimit) {
+                displayResult(`Minimum withdrawal amount is ${withdrawalLimit + 1} USD.`);
+            } else {
+                displayResult("Insufficient funds.");
+            }
+        }
+
+        function checkBalance() {
+            displayResult(`Your balance is ${balance} USD.`);
+            displayBalanceDetail();
+        }
+
+        function displayResult(message) {
+            document.getElementById("result").innerHTML = message;
+        }
+
+        function displayBalanceDetail() {
+            const balanceDetail = `
+                <h3>Balance Details</h3>
+                <p>Available Balance: ${balance} USD</p>
+                <p>Withdrawal Limit: ${withdrawalLimit} USD</p>
+            `;
+            document.getElementById("balance").innerHTML = balanceDetail;
+        }
+    </script>
+
+    <!-- Bootstrap core JavaScript (jQuery, Popper, Bootstrap JS) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>
